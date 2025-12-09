@@ -1,0 +1,8 @@
+Flask>=2.0
+nltk>=3.6
+scikit-learn>=1.0
+numpy>=1.21
+pandas>=1.3
+gunicorn>=20.0   # optional for production
+joblib>=1.0      # if you re-save models with joblib
+matplotlib>=3.4  # optional (notebook plotting)

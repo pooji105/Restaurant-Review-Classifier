@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Restaurant Review Classifier</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<div class="page-wrapper">
+
+    <!-- Top bar / brand -->
+    <header class="top-bar">
+        <div class="logo">FoodSense AI</div>
+        <div class="tagline">AI-Powered Restaurant Feedback Insights</div>
+    </header>
+
+    <!-- Hero section -->
+    <section class="hero">
+        <div class="hero-left">
+            <h1>Restaurant Review Classifier</h1>
+            <p class="hero-subtitle">
+                Paste any customer review and instantly see whether the experience was
+                <strong>positive or negative</strong>, along with key aspects like
+                food quality, service and hygiene.
+            </p>
+            <ul class="hero-points">
+                <li>✅ Monitor brand reputation in real-time</li>
+                <li>✅ Prioritize branches with poor feedback</li>
+                <li>✅ Understand what customers love or hate</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Main card -->
+    <main class="main-content">
+
+        <div class="card input-card">
+            <h2>Paste Customer Review</h2>
+            <p class="card-subtitle">
+                Enter a real review from Yelp, Zomato or Google. The AI will analyse the sentiment and highlight
+                important aspects.
+            </p>
+            <form method="POST" class="review-form">
+                <label for="review" class="field-label">Customer Review</label>
+                <textarea id="review" name="review" rows="6"
+                          placeholder="Example: The food was amazing but the service was very slow.">{{ review }}</textarea>
+
+                <div class="form-footer">
+                    <button type="submit" class="primary-btn">Analyse Review</button>
+                    <span class="hint-text">No data is stored – this is a local demo.</span>
+                </div>
+            </form>
+        </div>
+
+        {% if prediction_label %}
+        <div class="card result-card {{ sentiment_class }}">
+            <div class="result-header">
+                <span class="pill">Prediction</span>
+                <h2>
+                    {% if prediction_label == 'Positive' %}
+                        👍 Positive Experience
+                    {% else %}
+                        👎 Negative Experience
+                    {% endif %}
+                </h2>
+            </div>
+
+            <div class="result-body">
+                <div class="result-main">
+                    <p class="result-tagline">
+                        The model classified this review as
+                        <strong>{{ prediction_label }}</strong>.
+                    </p>
+                    {% if confidence %}
+                        <p class="confidence">
+                            Confidence score: <strong>{{ '%.2f'|format(confidence) }}%</strong>
+                        </p>
+                    {% endif %}
+                </div>
+
+                <div class="result-aspects">
+                    <h3>Key Aspects Mentioned</h3>
+                    <div class="chips">
+                        {% for a in aspects %}
+                            <span class="chip">{{ a }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="result-review">
+                    <h3>Original Review</h3>
+                    <p class="review-text">“{{ review }}”</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+    </main>
+
+    <footer class="footer">
+        <p><strong>Restaurant Review Classifier</strong> &nbsp;|&nbsp;
+           Built with Python, scikit-learn &amp; Flask</p>
+    </footer>
+
+</div>
+</body>
+</html>
